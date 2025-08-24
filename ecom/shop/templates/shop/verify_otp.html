@@ -1,0 +1,39 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Verify OTP {% endblock title %}
+{% block content %}
+  <section class="hero-section bg-light py-4">
+    <div class="hero-content">
+      <div class="container">
+        <div class="row">
+          <div class="text-center">
+            <div class="breadcrumbs">
+              <span class="item"><a href=" {% url "home_page" %} ">Home /</a></span>
+              <span class="item">Verify OTP</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="login-form" class="py-5">
+    <div class="container-sm">
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <h2 class="section-title text-uppercase">Verify OTP</h2>
+          <form id="form" class="form-group flex-wrap" method="post">
+            {% csrf_token %}
+            <div class="col-12 pb-3">
+                <label>Enter OTP</label>
+                <input type="text" name="otp" class="form-control" placeholder="Enter the OTP sent to your email" required>
+            </div>
+            <div class="col-12">
+              <button type="submit" name="submit" class="btn btn-dark btn-large text-uppercase pb-3">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

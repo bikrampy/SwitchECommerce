@@ -1,0 +1,51 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% load widget_tweaks %}
+{% block title %} Sign Up {% endblock title %}
+{% block content %}
+  <section class="hero-section bg-light py-4">
+    <div class="hero-content">
+      <div class="container">
+        <div class="row">
+          <div class="text-center">
+            <div class="breadcrumbs">
+              <span class="item"><a href="{% url "home_page" %}">Home /</a></span>
+              <span class="item">My Account</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="login-form" class="py-5">
+    <div class="container-sm">
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <h2 class="section-title text-uppercase">Signup</h2>
+          <form id="form" class="form-group flex-wrap" method="post">
+            {% csrf_token %}
+            <div class="col-12 pb-3">
+                {{ form.username.label_tag }}
+                {{ form.username|add_class:"form-control" }}
+                {{ form.username.errors }}
+            </div>
+            <div class="col-12 pb-3">
+                {{ form.password1.label_tag }}
+                {{ form.password1|add_class:"form-control" }}
+                {{ form.password1.errors }}
+            </div>
+            <div class="col-12 pb-3">
+                {{ form.password2.label_tag }}
+                {{ form.password2|add_class:"form-control" }}
+                {{ form.password2.errors }}
+            </div>
+            <div class="col-12">
+              <button type="submit" name="submit" class="btn btn-dark btn-large text-uppercase pb-3">Sign Up</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

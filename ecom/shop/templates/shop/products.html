@@ -1,0 +1,98 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %} Products {% endblock title %}
+{% block content %}
+  <section class="hero-section jarallax">
+    <img src=" {% static 'images/banner-large-4.jpg' %} " class="jarallax-img">
+    <div class="py-5">
+      <div class="container">
+        <div class="row">
+          <div class="d-flex flex-wrap flex-column justify-content-center align-items-center my-5 py-5 text-white">
+            <h1 class="page-title text-uppercase">Shop Right Sidebar</h1>
+            <nav class="breadcrumb text-white">
+              <a class="breadcrumb-item" href=" {% url "home_page" %} ">Home</a>
+              <a class="breadcrumb-item" href=" {% url "products" %} ">Products</a>
+              <span class="breadcrumb-item active" aria-current="page">Products</span>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="py-5">
+    <div class="container">
+      <div class="row g-5">
+        <main class="main-content col-md-9">
+          <div class="row py-2">
+            <div class="col-md-9">
+              <span>Showing 1–12 of 55 results</span>
+            </div>
+          </div>
+          <div class="row">
+            {% for product in products %}
+            <div class="col-md-4 mb-3 product-item link-effect">
+              <div class="image-holder position-relative">
+                <a href="{% url 'product_detail' product.id %}">
+                  <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image img-fluid">
+                </a>
+                <div class="product-content">
+                  <h5 class="element-title text-uppercase fs-5 mt-3">
+                    <a href="{% url 'product_detail' product.id %}">{{ product.title }}</a>
+                  </h5>
+                  <a href="#" class="text-decoration-none" data-after="Add to cart"><span>₹{{ product.price }}</span></a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <nav aria-label="Page navigation" class="d-flex justify-content-center mt-5">
+            <ul class="pagination">
+                {% if products.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ products.previous_page_number }}">Previous</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Previous</span></li>
+                {% endif %}
+                {% for num in products.paginator.page_range %}
+                    {% if products.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                    {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ num }}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if products.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?{% if selected_category %}category={{ selected_category }}&{% endif %}page={{ products.next_page_number }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><span class="page-link">Next</span></li>
+                {% endif %}
+            </ul>
+          </nav>
+        </main>
+        <aside class="col-md-3">
+          <div class="sidebar">
+            <div class="sidebar-categories border-animation-left mb-5">
+              <div class="text-dark text-uppercase">Browse By Categories:</div>
+              <ul class="list-unstyled">
+                <li>
+                  <a href="{% url 'products' %}" class="item-anchor {% if not selected_category %}active{% endif %}">All</a>
+                </li>
+                {% for category in categories %}
+                    <li>
+                        <a href="{% url 'products' %}?category={{ category.id }}" class="item-anchor {% if selected_category == category.id %}active{% endif %}">{{ category.name }}</a>
+                    </li>
+                {% endfor %}
+              </ul>
+            </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+{% endblock %}

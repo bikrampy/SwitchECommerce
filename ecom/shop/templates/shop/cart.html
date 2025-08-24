@@ -1,0 +1,163 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+My Cart
+{% endblock title %}
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1 class="page-title pb-2">Cart</h1>
+      <nav class="breadcrumb fs-6">
+        <a class="breadcrumb-item nav-link" href="{% url 'home_page' %}">Home</a>
+        <span class="breadcrumb-item active" aria-current="page">Cart</span>
+      </nav>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="cart-table">
+          <div class="cart-header">
+            <div class="row d-flex">
+              <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">
+                Product
+              </h6>
+              <h6 class="cart-title text-uppercase text-muted col-lg-3 pb-3">
+                Quantity
+              </h6>
+              <h6 class="cart-title text-uppercase text-muted col-lg-4 pb-3">
+                Subtotal
+              </h6>
+            </div>
+          </div>
+          {% if items %}
+          {% for item in items %}
+          <div class="cart-item border-top border-bottom">
+            <div class="row align-items-center">
+              <div class="col-lg-4 col-md-3">
+                <div class="cart-info d-flex flex-wrap align-items-center mb-4">
+                  <div class="col-lg-5">
+                    <div class="card-image">
+                      <img
+                        src="{{ item.product.image.url }}"
+                        alt="{{ item.product.name }}"
+                        class="img-fluid"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-7">
+                    <div class="card-detail ps-3">
+                      <h5 class="card-title">
+                        <a
+                          href="{% url 'product_detail' item.product.id %}"
+                          class="text-decoration-none"
+                          >{{ item.product.name }}</a
+                        >
+                      </h5>
+                      <div class="card-price">
+                        <span
+                          class="money text-dark"
+                          data-currency-usd="$1200.00"
+                          >₹{{ item.product.price }}</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-7">
+                <div class="row d-flex">
+                  <div class="col-md-4">
+                    <div class="input-group product-qty">
+                      <form method="post" action="{% url 'update_quantity' item.id %}">
+                        {% csrf_token %}
+                          <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control text-center">
+                          <div class="text-center mt-2">
+                            <button type="submit" class="btn btn-dark">Update</button>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="col-md-8 text-center">
+                    <div class="total-price">
+                      <span class="money text-dark">₹{{ item.subtotal }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-1 col-md-2">
+                <div class="cart-remove">
+                  <a href="{% url 'remove_from_cart' item.id %}">
+                    <svg width="32px">
+                      <use xlink:href="#trash"></use>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+            {% else %}
+              <p>Your cart is empty.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="cart-totals bg-grey py-5">
+          <h4 class="text-dark pb-4">Cart Total</h4>
+          <div class="total-price pb-5">
+            <table cellspacing="0" class="table text-uppercase">
+              <tbody>
+                <tr class="subtotal pt-2 pb-2 border-top border-bottom">
+                  <th>Subtotal</th>
+                  <td data-title="Subtotal">
+                    <span class="price-amount amount text-dark ps-5">
+                      <bdi>
+                        <span class="price-currency-symbol">₹</span>{{ total }}
+                      </bdi>
+                    </span>
+                  </td>
+                </tr>
+                <tr class="order-total pt-2 pb-2 border-bottom">
+                  <th>Total</th>
+                  <td data-title="Total">
+                    <span class="price-amount amount text-dark ps-5">
+                      <bdi>
+                        <span class="price-currency-symbol">₹</span
+                        >{{ total }}</bdi
+                      >
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="button-wrap row g-2">
+            <div class="col-md-12">
+              <button
+                class="btn btn-dark text-uppercase btn-rounded-none w-100"
+                onclick="window.location.href='{% url 'home_page' %}'"
+              >
+                Continue Shopping
+              </button>
+            </div>
+            <div class="col-md-12">
+              <button
+                class="btn btn-primary text-uppercase btn-rounded-none w-100"
+                onclick="window.location.href='{% url 'checkout' %}'"
+              >
+                Proceed to checkout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
